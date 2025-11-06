@@ -45,7 +45,7 @@ export default function SignupPage() {
     } else {
       toast({
         title: "Success",
-        description: "Account created! Please check your email to verify.",
+        description: "Account created! Please sign in.",
       })
       router.push("/app/prompts")
     }
