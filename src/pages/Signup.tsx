@@ -105,7 +105,7 @@ export default function Signup() {
           <AlertDialogHeader>
             <AlertDialogTitle>Your account has been created!</AlertDialogTitle>
             <AlertDialogDescription>
-              Please check your email to verify your account. You'll need to verify your email before you can log in.
+             Thank you for signing up! You can log in now.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
