@@ -10,9 +10,13 @@ export function PromptsFilter({ onCategoryChange }: PromptsFilterProps) {
   const [categories, setCategories] = useState<any[]>([])
 
   useEffect(() => {
-    supabase.from('prompt_categories').select('*').order('name').then(({ data }) => {
-      if (data) setCategories(data)
-    })
+    supabase
+      .from('prompt_categories')
+      .select('*')
+      .order('name')
+      .then(({ data }) => {
+        if (data) setCategories(data)
+      })
   }, [])
 
   return (
@@ -21,10 +25,14 @@ export function PromptsFilter({ onCategoryChange }: PromptsFilterProps) {
         <SelectTrigger className="w-[200px]">
           <SelectValue placeholder="All Categories" />
         </SelectTrigger>
-        <SelectContent>
+
+        {/* ✅ Added max height and scroll to SelectContent */}
+        <SelectContent className="max-h-64 overflow-y-auto">
           <SelectItem value="all">All Categories</SelectItem>
-          {categories.map(cat => (
-            <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+          {categories.map((cat) => (
+            <SelectItem key={cat.id} value={cat.id}>
+              {cat.name}
+            </SelectItem>
           ))}
         </SelectContent>
       </Select>
