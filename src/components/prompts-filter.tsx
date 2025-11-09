@@ -11,9 +11,9 @@ export function PromptsFilter({ onCategoryChange }: PromptsFilterProps) {
 
   useEffect(() => {
     supabase
-      .from('prompt_categories')
-      .select('*')
-      .order('name')
+      .from("prompt_categories")
+      .select("*")
+      .order("name")
       .then(({ data }) => {
         if (data) setCategories(data)
       })
@@ -21,19 +21,21 @@ export function PromptsFilter({ onCategoryChange }: PromptsFilterProps) {
 
   return (
     <div className="flex gap-4">
-      <Select onValueChange={(val) => onCategoryChange(val === 'all' ? null : val)}>
+      <Select onValueChange={(val) => onCategoryChange(val === "all" ? null : val)}>
         <SelectTrigger className="w-[200px]">
           <SelectValue placeholder="All Categories" />
         </SelectTrigger>
 
-        {/* ✅ Added max height and scroll to SelectContent */}
-        <SelectContent className="max-h-64 overflow-y-auto">
-          <SelectItem value="all">All Categories</SelectItem>
-          {categories.map((cat) => (
-            <SelectItem key={cat.id} value={cat.id}>
-              {cat.name}
-            </SelectItem>
-          ))}
+        {/* 👇 Scroll lives here */}
+        <SelectContent>
+          <div className="max-h-64 overflow-y-auto">
+            <SelectItem value="all">All Categories</SelectItem>
+            {categories.map((cat) => (
+              <SelectItem key={cat.id} value={cat.id}>
+                {cat.name}
+              </SelectItem>
+            ))}
+          </div>
         </SelectContent>
       </Select>
     </div>
