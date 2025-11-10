@@ -20,8 +20,18 @@ import {
 export function Navbar() {
   const { user, profile, signOut } = useAuth();
 
-  // 🔒 Strict Pro check: ONLY true when boolean true
-  const isPro = profile?.is_pro === true;
+  // 🔍 Debug: see what we're actually getting
+  console.log("Navbar user:", user);
+  console.log("Navbar profile:", profile);
+
+  // 🔒 Robust Pro check:
+  // Handles boolean, string, numeric edge cases safely.
+  const isPro =
+    profile?.is_pro === true ||
+    profile?.is_pro === "true" ||
+    profile?.is_pro === 1;
+
+  console.log("Navbar isPro computed:", isPro);
 
   return (
     <nav className="border-b bg-background/95 backdrop-blur sticky top-0 z-50">
@@ -35,7 +45,7 @@ export function Navbar() {
             className="w-12 h-12 md:w-10 md:h-10"
           />
 
-          {/* Smaller, responsive text, hidden on very small screens */}
+          {/* Smaller text, hidden on tiny screens */}
           <span className="hidden sm:inline text-lg md:text-xl font-semibold tracking-tight whitespace-nowrap">
             <span className="text-blue-600">Prompt</span>
             <span className="text-yellow-500">Goat</span>
@@ -43,16 +53,16 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Right side actions */}
+        {/* Right side */}
         <div className="flex items-center gap-4">
           {user ? (
             <>
-              {/* Browse Prompts - visible to all logged-in users */}
+              {/* Always available */}
               <Link to="/prompts">
                 <Button variant="ghost">Browse Prompts</Button>
               </Link>
 
-              {/* ✅ AI Chat - ONLY visible if Pro */}
+              {/* ✅ AI Chat: ONLY if isPro is true */}
               {isPro && (
                 <Link to="/app/chat">
                   <Button variant="ghost">
@@ -62,8 +72,9 @@ export function Navbar() {
                 </Link>
               )}
 
-              {/* (Optional) Uncomment this block if you want a Pro upsell instead of hiding:
-              
+              {/* (Optional) Upsell version instead of hiding:
+                  Uncomment this and remove the block above if you prefer:
+
               {!isPro && (
                 <Link to="/billing">
                   <Button
@@ -75,17 +86,16 @@ export function Navbar() {
                   </Button>
                 </Link>
               )}
-              
               */}
 
-              {/* Admin link (only for admins) */}
+              {/* Admin-only */}
               {profile?.role === "admin" && (
                 <Link to="/admin">
                   <Button variant="ghost">Admin</Button>
                 </Link>
               )}
 
-              {/* User menu */}
+              {/* User dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="icon">
