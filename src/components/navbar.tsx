@@ -6,7 +6,7 @@ import {
   User,
   Settings,
   BookMarked,
-  Heart
+  Heart,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -14,11 +14,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 export function Navbar() {
   const { user, profile, signOut } = useAuth();
+
+  // 🔒 Strict Pro check: ONLY true when boolean true
+  const isPro = profile?.is_pro === true;
 
   return (
     <nav className="border-b bg-background/95 backdrop-blur sticky top-0 z-50">
@@ -32,7 +35,7 @@ export function Navbar() {
             className="w-12 h-12 md:w-10 md:h-10"
           />
 
-          {/* Smaller, responsive text; hidden on very small screens */}
+          {/* Smaller, responsive text, hidden on very small screens */}
           <span className="hidden sm:inline text-lg md:text-xl font-semibold tracking-tight whitespace-nowrap">
             <span className="text-blue-600">Prompt</span>
             <span className="text-yellow-500">Goat</span>
@@ -49,8 +52,8 @@ export function Navbar() {
                 <Button variant="ghost">Browse Prompts</Button>
               </Link>
 
-              {/* AI Chat - ONLY for Pro users */}
-              {profile?.is_pro && (
+              {/* ✅ AI Chat - ONLY visible if Pro */}
+              {isPro && (
                 <Link to="/app/chat">
                   <Button variant="ghost">
                     <Sparkles className="w-4 h-4 mr-2" />
@@ -59,11 +62,14 @@ export function Navbar() {
                 </Link>
               )}
 
-              {/* Optional: If you want an upsell instead of hiding it, swap the block above with this:
+              {/* (Optional) Uncomment this block if you want a Pro upsell instead of hiding:
               
-              {!profile?.is_pro && (
+              {!isPro && (
                 <Link to="/billing">
-                  <Button variant="outline" className="border-dashed">
+                  <Button
+                    variant="outline"
+                    className="border-dashed"
+                  >
                     <Sparkles className="w-4 h-4 mr-2 text-blue-500" />
                     AI Chat (Pro)
                   </Button>
@@ -89,7 +95,7 @@ export function Navbar() {
                 <DropdownMenuContent align="end">
                   <div className="px-2 py-1.5 text-sm">
                     <p className="font-medium">{user.email}</p>
-                    {profile?.is_pro && (
+                    {isPro && (
                       <p className="text-xs text-muted-foreground">
                         Pro Member
                       </p>
@@ -157,25 +163,4 @@ export function Navbar() {
       </div>
     </nav>
   );
-}
-
-                    {profile?.is_pro && <p className="text-xs text-muted-foreground">Pro Member</p>}
-                  </div>
-                  <DropdownMenuItem asChild><Link to="/profile" className="cursor-pointer"><User className="mr-2 h-4 w-4" />Profile</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link to="/favorites" className="cursor-pointer"><Heart className="mr-2 h-4 w-4" />My Favorites</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link to="/app/my-prompts" className="cursor-pointer"><BookMarked className="mr-2 h-4 w-4" />My Custom Prompts</Link></DropdownMenuItem>
-
-                  <DropdownMenuItem asChild><Link to="/billing" className="cursor-pointer"><Sparkles className="mr-2 h-4 w-4" />Billing</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link to="/settings" className="cursor-pointer"><Settings className="mr-2 h-4 w-4" />Settings</Link></DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={signOut} className="cursor-pointer"><LogOut className="mr-2 h-4 w-4" />Sign Out</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </> : <>
-              <Link to="/login"><Button variant="ghost">Log In</Button></Link>
-              <Link to="/signup"><Button>Sign Up</Button></Link>
-            </>}
-        </div>
-      </div>
-    </nav>;
 }
