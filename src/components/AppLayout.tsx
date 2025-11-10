@@ -79,7 +79,7 @@ export default function AppLayout() {
               </Badge>
               
               <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-                Kickstart better AI results—fast.
+                “Prompts that work. Ideas that spark.” 
               </h1>
               
               <p className="text-xl text-muted-foreground max-w-lg">
@@ -89,7 +89,7 @@ export default function AppLayout() {
               <div className="flex flex-wrap gap-4">
                 <Button size="lg" className="text-lg group" onClick={() => navigate('/signup')}>
                   <Sparkles className="w-5 h-5 mr-2" />
-                  Start for Free
+                 “Try Free → Upgrade for Weekly Drops.”
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Button size="lg" variant="outline" className="text-lg" onClick={() => navigate('/signup')}>
