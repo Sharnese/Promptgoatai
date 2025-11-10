@@ -15,7 +15,19 @@ import {
   Briefcase,
   Heart,
   PenTool,
-  ClipboardCheck
+  ClipboardCheck,
+  Headphones,
+  LineChart,
+  AlertTriangle,
+  Megaphone,
+  Boxes,
+  Handshake,
+  Clapperboard,
+  Scale,
+  FileText,
+  AppWindow,
+  Code,
+  GraduationCap
 } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 import { FreePromptLibrary } from '@/components/free-prompt-library';
@@ -35,24 +47,94 @@ export default function AppLayout() {
       color: 'from-blue-500 to-blue-600'
     },
     {
-      name: 'Business & Admin',
-      icon: Briefcase,
-      color: 'from-yellow-500 to-yellow-600'
+      name: 'Compliance & Operations',
+      icon: ClipboardCheck,
+      color: 'from-slate-500 to-slate-600'
     },
     {
-      name: 'Self-Reflection & Wellness',
-      icon: Heart,
-      color: 'from-blue-400 to-blue-500'
+      name: 'Personal Productivity & Life Skills',
+      icon: Sparkles,
+      color: 'from-amber-400 to-amber-500'
+    },
+    {
+      name: 'Customer Support & Success',
+      icon: Headphones,
+      color: 'from-emerald-500 to-emerald-600'
+    },
+    {
+      name: 'Finance & Operations',
+      icon: LineChart,
+      color: 'from-emerald-400 to-emerald-500'
+    },
+    {
+      name: 'Design & Visual Creativity',
+      icon: PenTool,
+      color: 'from-pink-500 to-rose-500'
+    },
+    {
+      name: 'Difficult Conversations',
+      icon: AlertTriangle,
+      color: 'from-red-500 to-orange-500'
+    },
+    {
+      name: 'Marketing & Growth Strategy',
+      icon: Megaphone,
+      color: 'from-purple-500 to-indigo-500'
+    },
+    {
+      name: 'Product & Feature Development',
+      icon: Boxes,
+      color: 'from-cyan-500 to-blue-500'
+    },
+    {
+      name: 'Sales & Business Development',
+      icon: Handshake,
+      color: 'from-orange-400 to-amber-500'
+    },
+    {
+      name: 'AI Video & Image Production',
+      icon: Clapperboard,
+      color: 'from-fuchsia-500 to-purple-500'
+    },
+    {
+      name: 'Legal & Compliance',
+      icon: Scale,
+      color: 'from-zinc-600 to-zinc-800'
+    },
+    {
+      name: 'Content Creation & Blogging',
+      icon: FileText,
+      color: 'from-sky-400 to-sky-500'
+    },
+    {
+      name: 'No Code App Builders',
+      icon: AppWindow,
+      color: 'from-teal-400 to-teal-500'
+    },
+    {
+      name: 'Coding',
+      icon: Code,
+      color: 'from-slate-700 to-slate-900'
     },
     {
       name: 'AI Productivity & Writing',
       icon: PenTool,
-      color: 'from-yellow-400 to-yellow-500'
+      color: 'from-indigo-400 to-indigo-500'
     },
     {
-      name: 'Compliance & Operations',
-      icon: ClipboardCheck,
-      color: 'from-blue-600 to-blue-700'
+      name: 'Self-Reflection & Wellness',
+      icon: Heart,
+      color: 'from-rose-400 to-rose-500'
+    },
+    {
+      name: 'Learning & Education',
+      icon: GraduationCap,
+      color: 'from-blue-400 to-blue-500'
+    },
+    {
+      name: 'Business & Admin',
+      icon: Briefcase,
+      color: 'from-yellow-500 to-yellow-600'
     }
   ];
 
@@ -110,8 +192,7 @@ export default function AppLayout() {
               </h1>
 
               <p className="text-xl text-muted-foreground max-w-lg">
-                Curated prompts for clinical, business, and everyday workflows. Start free, upgrade
-                anytime.
+                Curated prompts for clinical, business, creative, and everyday workflows. Start free, upgrade anytime.
               </p>
 
               <div className="flex flex-wrap gap-4">
@@ -135,7 +216,6 @@ export default function AppLayout() {
               </div>
             </div>
 
-            {/* 👇 Updated hero image */}
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-purple-500/20 blur-3xl" />
               <img
@@ -153,10 +233,11 @@ export default function AppLayout() {
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4">Explore Categories</h2>
           <p className="text-muted-foreground text-lg">
-            Find prompts tailored to your industry
+            Every workflow, covered in one clean library.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
           {categories.map((cat) => (
             <Card
               key={cat.name}
@@ -165,19 +246,21 @@ export default function AppLayout() {
               onMouseEnter={() => setHoveredCategory(cat.name)}
               onMouseLeave={() => setHoveredCategory(null)}
             >
-              <CardHeader className="text-center">
+              <CardHeader className="text-center p-4">
                 <div
                   className={`mb-3 transition-transform flex justify-center ${
                     hoveredCategory === cat.name ? 'scale-110' : ''
                   }`}
                 >
                   <div
-                    className={`w-16 h-16 rounded-xl bg-gradient-to-br ${cat.color} flex items-center justify-center`}
+                    className={`w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br ${cat.color} flex items-center justify-center`}
                   >
-                    <cat.icon className="w-8 h-8 text-white" />
+                    <cat.icon className="w-6 h-6 md:w-7 md:h-7 text-white" />
                   </div>
                 </div>
-                <CardTitle className="text-sm leading-tight">{cat.name}</CardTitle>
+                <CardTitle className="text-[10px] sm:text-xs md:text-sm leading-tight">
+                  {cat.name}
+                </CardTitle>
               </CardHeader>
             </Card>
           ))}
@@ -189,10 +272,9 @@ export default function AppLayout() {
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4">Free Prompt Library</h2>
           <p className="text-muted-foreground text-lg">
-            Browse, search, and copy prompts instantly—no login required
+            Browse, search, and copy prompts instantly—no login required.
           </p>
         </div>
-
         <FreePromptLibrary />
       </section>
 
@@ -200,9 +282,6 @@ export default function AppLayout() {
       <section className="container mx-auto px-4 py-20">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4">Why PromptGoatAI?</h2>
-          <p className="text-muted-foreground text-lg">
-            Everything you need to supercharge your AI workflow
-          </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature) => (
@@ -226,7 +305,7 @@ export default function AppLayout() {
             <div>
               <h3 className="text-2xl font-bold mb-2">Choose Your Plan</h3>
               <p className="text-muted-foreground">
-                Free: Browse core prompts • Pro: Unlock premium prompts • $15/mo • Cancel anytime
+                Free: Browse core prompts • Pro: Unlock premium drops • $15/mo • Cancel anytime
               </p>
             </div>
             <Button size="lg" onClick={() => navigate('/signup')}>
@@ -245,7 +324,7 @@ export default function AppLayout() {
               Ready to Get Started?
             </CardTitle>
             <CardDescription className="text-primary-foreground/90 text-lg max-w-2xl mx-auto">
-              Join professionals using PromptGoatAI to enhance their AI workflows
+              Join professionals using PromptGoatAI to enhance their AI workflows.
             </CardDescription>
 
             <div className="pt-4">
@@ -277,7 +356,7 @@ export default function AppLayout() {
                 <span className="font-bold text-xl">PromptGoatAI</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                Your AI prompt library for enhanced productivity
+                Your AI prompt library for enhanced productivity.
               </p>
             </div>
             <div>
@@ -309,7 +388,7 @@ export default function AppLayout() {
                     onClick={() =>
                       openModal(
                         'About PromptGoatAI',
-                        'PromptGoatAI helps you get quality results from AI faster. We curate and structure prompts for real-world workflows—clinical documentation, business ops, writing, and personal productivity—so you can skip the trial-and-error and get to outcomes.'
+                        'PromptGoatAI helps you get quality results from AI faster. We curate and structure prompts for real-world workflows—clinical documentation, business ops, writing, creative work, and personal productivity—so you can skip the trial-and-error and get to outcomes.'
                       )
                     }
                     className="hover:text-foreground transition-colors"
