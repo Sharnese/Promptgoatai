@@ -37,8 +37,8 @@ export default async function Home() {
       <section className="container mx-auto px-4 py-20 text-center">
         <div className="relative mb-8 h-64 rounded-2xl overflow-hidden">
           <Image
-            src="https://d64gsuwffb70l.cloudfront.net/68fdbff7c6e8eda4746863a2_1761460340544_07f94609.webp"
-            alt="PromptPort Hero"
+            src="/prompt-goat-photo.png"
+            alt="The G.O.A.T — Employee of the Month"
             fill
             className="object-cover"
             priority
