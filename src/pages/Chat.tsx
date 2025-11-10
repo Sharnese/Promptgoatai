@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Send, Sparkles, Copy, Save, Activity, Trash2, ArrowLeft } from 'lucide-react';
+import { Loader2, Send, Sparkles, Copy, Save, Trash2, ArrowLeft, Lock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface Message {
@@ -17,34 +17,65 @@ export default function Chat() {
   const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [diagnostics, setDiagnostics] = useState<any>({});
+  const [isPro, setIsPro] = useState<boolean | null>(null);
+  const [profileLoading, setProfileLoading] = useState(true);
+
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    fetchProfile();
     checkHealth();
-  }, []);
+  }, [user?.id]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages]);
 
+  const fetchProfile = async () => {
+    try {
+      if (!user) {
+        setIsPro(false);
+        setProfileLoading(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('is_pro')
+        .eq('id', user.id)
+        .single();
+
+      if (error) {
+        console.error('Error loading profile:', error);
+        setIsPro(false);
+      } else {
+        setIsPro(!!data?.is_pro);
+      }
+    } catch (err) {
+      console.error('Profile fetch failed:', err);
+      setIsPro(false);
+    } finally {
+      setProfileLoading(false);
+    }
+  };
+
   const checkHealth = async () => {
     try {
       const supabaseUrl = (supabase as any).supabaseUrl;
       const supabaseKey = (supabase as any).supabaseKey;
-      
-      const response = await fetch(
-        `${supabaseUrl}/functions/v1/ai-chat`,
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${supabaseKey}`,
-          },
-        }
-      );
+
+      const response = await fetch(`${supabaseUrl}/functions/v1/ai-chat`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${supabaseKey}`,
+        },
+      });
+
       const data = await response.json();
       if (data) setDiagnostics(data);
       console.log('Health check:', data);
@@ -56,6 +87,16 @@ export default function Chat() {
 
   const sendMessage = async () => {
     if (!input.trim() || loading) return;
+
+    // 🔒 Frontend guard: if not Pro, block
+    if (!isPro) {
+      toast({
+        title: 'Chat is a Pro feature',
+        description: 'Upgrade to PromptGoat Pro to unlock the AI chat builder.',
+        variant: 'destructive',
+      });
+      return;
+    }
 
     const userMsg = { role: 'user' as const, content: input };
     setMessages(prev => [...prev, userMsg]);
@@ -92,18 +133,21 @@ export default function Chat() {
       }
 
       console.log('✅ AI Response:', aiContent.substring(0, 100));
-      
+
       const assistantMsg = { role: 'assistant' as const, content: aiContent };
       setMessages(prev => [...prev, assistantMsg]);
 
-      toast({ title: 'Response received', description: 'AI has replied to your message' });
+      toast({
+        title: 'Response received',
+        description: 'AI has replied to your message',
+      });
 
     } catch (error: any) {
       console.error('💥 Error:', error);
-      toast({ 
-        title: 'Error', 
-        description: error.message || 'Failed to get AI response', 
-        variant: 'destructive' 
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to get AI response',
+        variant: 'destructive',
       });
       setMessages(prev => prev.slice(0, -1));
     } finally {
@@ -116,27 +160,9 @@ export default function Chat() {
     toast({ title: 'Chat cleared', description: 'Starting fresh conversation' });
   };
 
-  const showPromptCard = (prompt: any) => {
-    toast({
-      title: prompt.title,
-      description: (
-        <div className="space-y-2">
-          <p className="text-xs">{prompt.description}</p>
-          <div className="flex gap-2">
-            <Button size="sm" variant="outline" onClick={() => navigator.clipboard.writeText(prompt.body)}>
-              <Copy className="w-3 h-3 mr-1" />Copy
-            </Button>
-            <Button size="sm" onClick={() => savePrompt(prompt)}>
-              <Save className="w-3 h-3 mr-1" />Save
-            </Button>
-          </div>
-        </div>
-      ),
-    });
-  };
-
   const savePrompt = async (prompt: any) => {
-    await supabase.from('custom_prompts').insert({ user_id: user?.id, ...prompt });
+    if (!user) return;
+    await supabase.from('custom_prompts').insert({ user_id: user.id, ...prompt });
     toast({ title: 'Saved!', description: 'Prompt saved to My Custom Prompts' });
   };
 
@@ -145,15 +171,78 @@ export default function Chat() {
     toast({ title: 'Copied!', description: 'Prompt copied to clipboard' });
   };
 
+  // 🔄 While profile is loading
+  if (profileLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-slate-50">
+        <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+      </div>
+    );
+  }
+
+  // 🔒 Non-Pro view: no chat box, just upgrade CTA
+  if (!isPro) {
+    return (
+      <div className="flex flex-col h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
+        <div className="border-b border-blue-200 bg-white/90 backdrop-blur-sm shadow-sm">
+          <div className="max-w-4xl mx-auto px-6 py-4">
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate('/prompts')}
+                className="mr-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Dashboard
+              </Button>
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-yellow-500 flex items-center justify-center shadow-lg">
+                <Lock className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-slate-900">Chat is a Pro Feature</h1>
+                <p className="text-xs text-blue-600">
+                  Upgrade to unlock the AI prompt builder and weekly Pro prompt drops.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex-1 flex items-center justify-center px-6">
+          <Card className="max-w-md w-full p-6 text-center shadow-xl border-blue-100 bg-white/95">
+            <h2 className="text-2xl font-bold mb-3 text-slate-900">Unlock PromptGoat Pro 🐐🚀</h2>
+            <p className="text-slate-600 mb-4 text-sm">
+              Get full access to the Pro prompt library, weekly updates, and this AI chat builder
+              that crafts custom prompts for your brand, content, and workflows.
+            </p>
+            <ul className="text-left text-sm text-slate-700 mb-6 space-y-1">
+              <li>• Full Pro prompt library</li>
+              <li>• Weekly new prompt drops</li>
+              <li>• AI Prompt Chat builder</li>
+            </ul>
+            <Button
+              className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
+              onClick={() => navigate('/billing')} // update to your real upgrade route
+            >
+              Upgrade to Pro for $15/month
+            </Button>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  // ✅ Pro view: full chat
   return (
     <div className="flex flex-col h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
       <div className="border-b border-blue-200 bg-white/90 backdrop-blur-sm shadow-sm">
         <div className="max-w-4xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Button 
-                variant="ghost" 
-                size="sm" 
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => navigate('/prompts')}
                 className="mr-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
               >
@@ -170,7 +259,12 @@ export default function Chat() {
             </div>
             <div className="flex gap-2">
               {messages.length > 0 && (
-                <Button variant="outline" size="sm" onClick={clearChat} className="border-blue-300 text-blue-600 hover:bg-blue-50 hover:text-blue-700">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={clearChat}
+                  className="border-blue-300 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
+                >
                   <Trash2 className="w-4 h-4 mr-2" />
                   New Chat
                 </Button>
@@ -195,10 +289,30 @@ export default function Chat() {
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl mx-auto">
                 {[
-                  { icon: '✍️', text: 'Help me write a prompt for content creation', prompt: 'I need help creating a prompt for generating blog posts about technology' },
-                  { icon: '🎨', text: 'Create an image generation prompt', prompt: 'Help me write a detailed prompt for generating AI art' },
-                  { icon: '💼', text: 'Business email writing assistant', prompt: 'I want to create a prompt for writing professional business emails' },
-                  { icon: '🔍', text: 'Data analysis prompt', prompt: 'Help me create a prompt for analyzing and summarizing data' },
+                  {
+                    icon: '✍️',
+                    text: 'Help me write a prompt for content creation',
+                    prompt:
+                      'I need help creating a prompt for generating blog posts.,
+                  },
+                  {
+                    icon: '🎨',
+                    text: 'Create an image generation prompt',
+                    prompt:
+                      'Help me write a detailed prompt for generating AI art',
+                  },
+                  {
+                    icon: '💼',
+                    text: 'Business email writing assistant',
+                    prompt:
+                      'I want to create a prompt for writing professional business emails',
+                  },
+                  {
+                    icon: '🔍',
+                    text: 'Data analysis prompt',
+                    prompt:
+                      'Help me create a prompt for analyzing and summarizing data',
+                  },
                 ].map((suggestion, idx) => (
                   <Button
                     key={idx}
@@ -217,14 +331,27 @@ export default function Chat() {
           )}
 
           {messages.map((msg, i) => (
-            <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div
+              key={i}
+              className={`flex ${
+                msg.role === 'user' ? 'justify-end' : 'justify-start'
+              }`}
+            >
               <div className="relative group max-w-[80%]">
-                <Card className={`p-4 ${
-                  msg.role === 'user' 
-                    ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg border-blue-600' 
-                    : 'bg-white shadow-md border-blue-100'
-                }`}>
-                  <p className={`whitespace-pre-wrap text-sm leading-relaxed ${msg.role === 'assistant' ? 'text-slate-700' : ''}`}>{msg.content}</p>
+                <Card
+                  className={`p-4 ${
+                    msg.role === 'user'
+                      ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg border-blue-600'
+                      : 'bg-white shadow-md border-blue-100'
+                  }`}
+                >
+                  <p
+                    className={`whitespace-pre-wrap text-sm leading-relaxed ${
+                      msg.role === 'assistant' ? 'text-slate-700' : ''
+                    }`}
+                  >
+                    {msg.content}
+                  </p>
                 </Card>
                 {msg.role === 'assistant' && (
                   <Button
@@ -260,11 +387,21 @@ export default function Chat() {
             disabled={loading}
             className="flex-1 border-blue-200 focus:border-blue-400 focus:ring-blue-400"
           />
-          <Button onClick={sendMessage} disabled={loading} size="lg" className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md">
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+          <Button
+            onClick={sendMessage}
+            disabled={loading}
+            size="lg"
+            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md"
+          >
+            {loading ? (
+              <Loader2 className="w-5 h-5 animate-spin" />
+            ) : (
+              <Send className="w-5 h-5" />
+            )}
           </Button>
         </div>
       </div>
     </div>
   );
 }
+
