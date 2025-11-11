@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
@@ -15,127 +21,28 @@ import {
   Briefcase,
   Heart,
   PenTool,
-  ClipboardCheck,
-  Headphones,
-  LineChart,
-  AlertTriangle,
-  Megaphone,
-  Boxes,
-  Handshake,
-  Clapperboard,
-  Scale,
-  FileText,
-  AppWindow,
-  Code,
-  GraduationCap
+  ClipboardCheck
 } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 import { FreePromptLibrary } from '@/components/free-prompt-library';
 
 export default function AppLayout() {
   const navigate = useNavigate();
-  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [modalContent, setModalContent] = useState<{
     title: string;
     content: string;
   } | null>(null);
 
-  const categories = [
-    {
-      name: 'Clinical & Human Services',
-      icon: Stethoscope,
-      color: 'from-blue-500 to-blue-600'
-    },
-    {
-      name: 'Compliance & Operations',
-      icon: ClipboardCheck,
-      color: 'from-slate-500 to-slate-600'
-    },
-    {
-      name: 'Personal Productivity & Life Skills',
-      icon: Sparkles,
-      color: 'from-amber-400 to-amber-500'
-    },
-    {
-      name: 'Customer Support & Success',
-      icon: Headphones,
-      color: 'from-emerald-500 to-emerald-600'
-    },
-    {
-      name: 'Finance & Operations',
-      icon: LineChart,
-      color: 'from-emerald-400 to-emerald-500'
-    },
-    {
-      name: 'Design & Visual Creativity',
-      icon: PenTool,
-      color: 'from-pink-500 to-rose-500'
-    },
-    {
-      name: 'Difficult Conversations',
-      icon: AlertTriangle,
-      color: 'from-red-500 to-orange-500'
-    },
-    {
-      name: 'Marketing & Growth Strategy',
-      icon: Megaphone,
-      color: 'from-purple-500 to-indigo-500'
-    },
-    {
-      name: 'Product & Feature Development',
-      icon: Boxes,
-      color: 'from-cyan-500 to-blue-500'
-    },
-    {
-      name: 'Sales & Business Development',
-      icon: Handshake,
-      color: 'from-orange-400 to-amber-500'
-    },
-    {
-      name: 'AI Video & Image Production',
-      icon: Clapperboard,
-      color: 'from-fuchsia-500 to-purple-500'
-    },
-    {
-      name: 'Legal & Compliance',
-      icon: Scale,
-      color: 'from-zinc-600 to-zinc-800'
-    },
-    {
-      name: 'Content Creation & Blogging',
-      icon: FileText,
-      color: 'from-sky-400 to-sky-500'
-    },
-    {
-      name: 'No Code App Builders',
-      icon: AppWindow,
-      color: 'from-teal-400 to-teal-500'
-    },
-    {
-      name: 'Coding',
-      icon: Code,
-      color: 'from-slate-700 to-slate-900'
-    },
-    {
-      name: 'AI Productivity & Writing',
-      icon: PenTool,
-      color: 'from-indigo-400 to-indigo-500'
-    },
-    {
-      name: 'Self-Reflection & Wellness',
-      icon: Heart,
-      color: 'from-rose-400 to-rose-500'
-    },
-    {
-      name: 'Learning & Education',
-      icon: GraduationCap,
-      color: 'from-blue-400 to-blue-500'
-    },
-    {
-      name: 'Business & Admin',
-      icon: Briefcase,
-      color: 'from-yellow-500 to-yellow-600'
-    }
+  // Simple high-level categories for cleaner UI
+  const simpleCategories = [
+    'Clinical & Human Services',
+    'Business & Admin',
+    'AI Productivity & Writing',
+    'Self-Reflection & Wellness',
+    'Marketing & Growth',
+    'Sales & Client Outreach',
+    'Design & Creative',
+    'Compliance & Operations'
   ];
 
   const features = [
@@ -157,12 +64,12 @@ export default function AppLayout() {
     {
       icon: Shield,
       title: 'Secure & Private',
-      desc: 'Your data is protected with enterprise-grade security.'
+      desc: 'Your data is protected with modern best practices.'
     },
     {
       icon: Check,
       title: 'Always Updated',
-      desc: 'New prompts added weekly by our expert team.'
+      desc: 'New prompts added weekly for Pro, quarterly for Free.'
     }
   ];
 
@@ -181,6 +88,7 @@ export default function AppLayout() {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-purple-500/10 to-pink-500/10" />
         <div className="container mx-auto px-4 py-24 md:py-32 relative">
           <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Left: Text */}
             <div className="text-left space-y-8">
               <Badge className="w-fit" variant="secondary">
                 <Sparkles className="w-3 h-3 mr-1" />
@@ -188,11 +96,12 @@ export default function AppLayout() {
               </Badge>
 
               <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-                “Prompts that work. Ideas that spark.”
+                Prompts that work. Ideas that spark.
               </h1>
 
               <p className="text-xl text-muted-foreground max-w-lg">
-                Curated prompts for clinical, business, creative, and everyday workflows. Start free, upgrade anytime.
+                Curated prompts for clinical, business, creative, and everyday workflows.
+                Start free, unlock Pro when you’re ready.
               </p>
 
               <div className="flex flex-wrap gap-4">
@@ -202,7 +111,7 @@ export default function AppLayout() {
                   onClick={() => navigate('/signup')}
                 >
                   <Sparkles className="w-5 h-5 mr-2" />
-                  “Try Free → Upgrade for Weekly Drops.”
+                  Start Free → Upgrade Anytime
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Button
@@ -216,53 +125,39 @@ export default function AppLayout() {
               </div>
             </div>
 
+            {/* Right: Hero Image */}
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-purple-500/20 blur-3xl" />
               <img
-                src="/prompt-goat-photo.png"
+                src="/prompt_goat_photo.png"
                 alt="The G.O.A.T — Employee of the Month"
-                className="relative rounded-2xl shadow-2xl w-full"
+                className="relative rounded-2xl shadow-2xl w-full object-cover"
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Categories */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">Explore Categories</h2>
+      {/* Categories - simplified 4-column check list */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-3">
+            Built for real-world workflows
+          </h2>
           <p className="text-muted-foreground text-lg">
-            Every workflow, covered in one clean library.
+            PromptGoatAI covers the core categories professionals actually use.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-          {categories.map((cat) => (
-            <Card
-              key={cat.name}
-              className="hover:shadow-xl transition-all cursor-pointer transform hover:-translate-y-1"
-              onClick={() => navigate('/signup')}
-              onMouseEnter={() => setHoveredCategory(cat.name)}
-              onMouseLeave={() => setHoveredCategory(null)}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto">
+          {simpleCategories.map((cat) => (
+            <div
+              key={cat}
+              className="flex items-center gap-2 text-sm md:text-base text-muted-foreground"
             >
-              <CardHeader className="text-center p-4">
-                <div
-                  className={`mb-3 transition-transform flex justify-center ${
-                    hoveredCategory === cat.name ? 'scale-110' : ''
-                  }`}
-                >
-                  <div
-                    className={`w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br ${cat.color} flex items-center justify-center`}
-                  >
-                    <cat.icon className="w-6 h-6 md:w-7 md:h-7 text-white" />
-                  </div>
-                </div>
-                <CardTitle className="text-[10px] sm:text-xs md:text-sm leading-tight">
-                  {cat.name}
-                </CardTitle>
-              </CardHeader>
-            </Card>
+              <Check className="w-4 h-4 text-primary" />
+              <span>{cat}</span>
+            </div>
           ))}
         </div>
       </section>
@@ -270,9 +165,9 @@ export default function AppLayout() {
       {/* Free Prompt Library */}
       <section className="container mx-auto px-4 py-20">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">Free Prompt Library</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Free Prompt Library</h2>
           <p className="text-muted-foreground text-lg">
-            Browse, search, and copy prompts instantly—no login required.
+            Browse, search, and copy free prompts instantly — no login required.
           </p>
         </div>
         <FreePromptLibrary />
@@ -281,7 +176,7 @@ export default function AppLayout() {
       {/* Features */}
       <section className="container mx-auto px-4 py-20">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">Why PromptGoatAI?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Why PromptGoatAI?</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature) => (
@@ -298,21 +193,95 @@ export default function AppLayout() {
         </div>
       </section>
 
-      {/* Pricing CTA */}
-      <section className="bg-muted/30 py-12">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div>
-              <h3 className="text-2xl font-bold mb-2">Choose Your Plan</h3>
-              <p className="text-muted-foreground">
-                Free: Browse core prompts • Pro: Unlock premium drops • $15/mo • Cancel anytime
-              </p>
-            </div>
-            <Button size="lg" onClick={() => navigate('/signup')}>
-              Upgrade to Pro
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-          </div>
+      {/* Comparison Grid: Free vs Pro */}
+      <section id="comparison" className="container mx-auto px-4 py-20">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-bold mb-3">
+            Choose your PromptGoatAI plan
+          </h2>
+          <p className="text-muted-foreground text-lg">
+            Start free. Upgrade when you’re ready for more power.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {/* Free */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Free</CardTitle>
+              <CardDescription>Perfect for trying PromptGoatAI.</CardDescription>
+              <div className="text-3xl font-bold mt-2">
+                $0<span className="text-lg font-normal">/month</span>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2 text-green-500" />
+                  Access to free prompts
+                </li>
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2 text-green-500" />
+                  Browse, search & copy
+                </li>
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2 text-green-500" />
+                  Quarterly library updates
+                </li>
+              </ul>
+              <Button
+                className="w-full mt-6"
+                variant="outline"
+                onClick={() => navigate('/signup')}
+              >
+                Get Started Free
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Pro */}
+          <Card className="border-primary shadow-lg">
+            <CardHeader>
+              <Badge className="w-fit mb-2">Most Popular</Badge>
+              <CardTitle>Pro</CardTitle>
+              <CardDescription>
+                For creators, teams, and operators who want everything.
+              </CardDescription>
+              <div className="text-3xl font-bold mt-2">
+                $15<span className="text-lg font-normal">/month</span>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2 text-green-500" />
+                  Everything in Free
+                </li>
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2 text-green-500" />
+                  Access to all Pro prompts
+                </li>
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2 text-green-500" />
+                  Prompt Custom AI Chat
+                </li>
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2 text-green-500" />
+                  Request custom prompts & prompt packs
+                </li>
+                <li className="flex items-center">
+                  <Check className="w-4 h-4 mr-2 text-green-500" />
+                  Weekly Pro library updates
+                </li>
+              </ul>
+              <Button
+                className="w-full mt-6"
+                onClick={() => navigate('/signup')}
+              >
+                Upgrade to Pro
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
@@ -321,10 +290,10 @@ export default function AppLayout() {
         <Card className="bg-gradient-to-r from-primary to-purple-600 text-primary-foreground">
           <CardHeader className="text-center space-y-4 py-12">
             <CardTitle className="text-4xl font-bold">
-              Ready to Get Started?
+              Ready to get started?
             </CardTitle>
             <CardDescription className="text-primary-foreground/90 text-lg max-w-2xl mx-auto">
-              Join professionals using PromptGoatAI to enhance their AI workflows.
+              Join professionals using PromptGoatAI to create better outputs in less time.
             </CardDescription>
 
             <div className="pt-4">
@@ -388,7 +357,7 @@ export default function AppLayout() {
                     onClick={() =>
                       openModal(
                         'About PromptGoatAI',
-                        'PromptGoatAI helps you get quality results from AI faster. We curate and structure prompts for real-world workflows—clinical documentation, business ops, writing, creative work, and personal productivity—so you can skip the trial-and-error and get to outcomes.'
+                        'PromptGoatAI helps you get quality results from AI faster. We curate and structure prompts for real-world workflows so you can skip the trial-and-error and get to outcomes.'
                       )
                     }
                     className="hover:text-foreground transition-colors"
@@ -419,7 +388,7 @@ export default function AppLayout() {
                     onClick={() =>
                       openModal(
                         'Privacy Policy — PromptGoatAI',
-                        'We collect only the information needed to create your account, manage subscriptions, and improve the service. We do not sell personal data. Payment information is handled by Stripe and never stored on PromptGoatAI servers. You can request deletion of your account and associated data at any time by emailing promptgoatai@gmail.com.'
+                        'We collect only the information needed to create your account, manage subscriptions, and improve the service. Payment info is handled by Stripe. You can request deletion of your data anytime.'
                       )
                     }
                     className="hover:text-foreground transition-colors"
@@ -432,7 +401,7 @@ export default function AppLayout() {
                     onClick={() =>
                       openModal(
                         'Terms of Use — PromptGoatAI',
-                        'PromptGoatAI offers a Free tier and a Pro subscription at $15/month. Subscriptions renew automatically each month until canceled. You can cancel anytime, and access remains through the end of the current billing period. Refunds are not provided for partial periods. Premium prompts and certain features require an active Pro subscription. Payments are processed by Stripe and subject to Stripe terms. By using PromptGoatAI, you agree to these terms.'
+                        'PromptGoatAI offers a Free tier and a Pro subscription at $15/month. Subscriptions renew automatically until canceled. Pro features require an active subscription.'
                       )
                     }
                     className="hover:text-foreground transition-colors"
