@@ -16,12 +16,7 @@ import {
   Lock,
   Check,
   ArrowRight,
-  Shield,
-  Stethoscope,
-  Briefcase,
-  Heart,
-  PenTool,
-  ClipboardCheck
+  Shield
 } from 'lucide-react';
 import { Navbar } from '@/components/navbar';
 import { FreePromptLibrary } from '@/components/free-prompt-library';
@@ -33,16 +28,27 @@ export default function AppLayout() {
     content: string;
   } | null>(null);
 
-  // Simple high-level categories for cleaner UI
-  const simpleCategories = [
+  // ✅ All categories, rendered in a simple 4-column checklist
+  const allCategories = [
     'Clinical & Human Services',
-    'Business & Admin',
+    'Compliance & Operations',
+    'Personal Productivity & Life Skills',
+    'Customer Support & Success',
+    'Finance & Operations',
+    'Design & Visual Creativity',
+    'Difficult Conversations',
+    'Marketing & Growth Strategy',
+    'Product & Feature Development',
+    'Sales & Business Development',
+    'AI Video & Image Production',
+    'Legal & Compliance',
+    'Content Creation & Blogging',
+    'No Code App Builders',
+    'Coding',
     'AI Productivity & Writing',
     'Self-Reflection & Wellness',
-    'Marketing & Growth',
-    'Sales & Client Outreach',
-    'Design & Creative',
-    'Compliance & Operations'
+    'Learning & Education',
+    'Business & Admin'
   ];
 
   const features = [
@@ -64,20 +70,17 @@ export default function AppLayout() {
     {
       icon: Shield,
       title: 'Secure & Private',
-      desc: 'Your data is protected with modern best practices.'
+      desc: 'Your data is handled with modern best practices.'
     },
     {
       icon: Check,
       title: 'Always Updated',
-      desc: 'New prompts added weekly for Pro, quarterly for Free.'
+      desc: 'Weekly Pro drops. Quarterly Free updates.'
     }
   ];
 
   const openModal = (title: string, content: string) =>
-    setModalContent({
-      title,
-      content
-    });
+    setModalContent({ title, content });
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
@@ -129,7 +132,7 @@ export default function AppLayout() {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-purple-500/20 blur-3xl" />
               <img
-                src="/prompt_goat_photo.png"
+                src="/prompt-goat-photo.png"
                 alt="The G.O.A.T — Employee of the Month"
                 className="relative rounded-2xl shadow-2xl w-full object-cover"
               />
@@ -138,19 +141,19 @@ export default function AppLayout() {
         </div>
       </section>
 
-      {/* Categories - simplified 4-column check list */}
+      {/* Categories - simple 4-column checklist with ALL categories */}
       <section className="container mx-auto px-4 py-16">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-bold mb-3">
-            Built for real-world workflows
+            Built for real-world use cases
           </h2>
           <p className="text-muted-foreground text-lg">
-            PromptGoatAI covers the core categories professionals actually use.
+            PromptGoatAI covers every key category you need to ship faster with AI.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto">
-          {simpleCategories.map((cat) => (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-5xl mx-auto">
+          {allCategories.map((cat) => (
             <div
               key={cat}
               className="flex items-center gap-2 text-sm md:text-base text-muted-foreground"
@@ -197,10 +200,10 @@ export default function AppLayout() {
       <section id="comparison" className="container mx-auto px-4 py-20">
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold mb-3">
-            Choose your PromptGoatAI plan
+            Compare plans
           </h2>
           <p className="text-muted-foreground text-lg">
-            Start free. Upgrade when you’re ready for more power.
+            Start free. Upgrade when you’re ready for more power, features, and support.
           </p>
         </div>
 
@@ -209,7 +212,7 @@ export default function AppLayout() {
           <Card>
             <CardHeader>
               <CardTitle>Free</CardTitle>
-              <CardDescription>Perfect for trying PromptGoatAI.</CardDescription>
+              <CardDescription>Perfect for getting started.</CardDescription>
               <div className="text-3xl font-bold mt-2">
                 $0<span className="text-lg font-normal">/month</span>
               </div>
@@ -245,7 +248,7 @@ export default function AppLayout() {
               <Badge className="w-fit mb-2">Most Popular</Badge>
               <CardTitle>Pro</CardTitle>
               <CardDescription>
-                For creators, teams, and operators who want everything.
+                For power users, teams, and operators who want everything.
               </CardDescription>
               <div className="text-3xl font-bold mt-2">
                 $15<span className="text-lg font-normal">/month</span>
@@ -357,7 +360,7 @@ export default function AppLayout() {
                     onClick={() =>
                       openModal(
                         'About PromptGoatAI',
-                        'PromptGoatAI helps you get quality results from AI faster. We curate and structure prompts for real-world workflows so you can skip the trial-and-error and get to outcomes.'
+                        'PromptGoatAI helps you get quality results from AI faster. We curate and structure prompts for real-world workflows so you can skip trial-and-error and get to outcomes.'
                       )
                     }
                     className="hover:text-foreground transition-colors"
