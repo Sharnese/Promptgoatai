@@ -20,16 +20,10 @@ import {
 export function Navbar() {
   const { user, profile, signOut } = useAuth();
 
-  // 🔍 Debug
-  console.log("Navbar user:", user);
-  console.log("Navbar profile:", profile);
-
   const isPro =
     profile?.is_pro === true ||
     profile?.is_pro === "true" ||
     profile?.is_pro === 1;
-
-  console.log("Navbar isPro computed:", isPro);
 
   return (
     <nav className="border-b bg-background/95 backdrop-blur sticky top-0 z-50">
@@ -52,17 +46,17 @@ export function Navbar() {
         <div className="flex items-center gap-4">
           {user ? (
             <>
-              {/* Always available */}
+              {/* Browse Prompts */}
               <Link to="/prompts">
                 <Button variant="ghost">Browse Prompts</Button>
               </Link>
 
-              {/* ✅ Free Prompt Pack (visible for logged-in users) */}
+              {/* Free Prompt Pack */}
               <Link to="/free-prompt-pack">
                 <Button variant="ghost">Free Prompt Pack</Button>
               </Link>
 
-              {/* ✅ AI Chat: ONLY if isPro is true */}
+              {/* AI Chat (Pro only) */}
               {isPro && (
                 <Link to="/app/chat">
                   <Button variant="ghost">
@@ -145,7 +139,7 @@ export function Navbar() {
             </>
           ) : (
             <>
-              {/* ✅ Free Prompt Pack (visible even if logged out) */}
+              {/* Free Prompt Pack visible pre-login */}
               <Link to="/free-prompt-pack">
                 <Button variant="ghost">Free Prompt Pack</Button>
               </Link>
