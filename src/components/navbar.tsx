@@ -61,6 +61,16 @@ export function Navbar() {
               <Link to="/prompts">
                 <Button variant="ghost">Browse Prompts</Button>
               </Link>
+              {/* Always available */}
+<Link to="/prompts">
+  <Button variant="ghost">Browse Prompts</Button>
+</Link>
+
+{/* ✅ Free Prompt Pack */}
+<Link to="/free-prompt-pack">
+  <Button variant="ghost">Free Prompt Pack</Button>
+</Link>
+
 
               {/* ✅ AI Chat: ONLY if isPro is true */}
               {isPro && (
