@@ -20,12 +20,10 @@ import {
 export function Navbar() {
   const { user, profile, signOut } = useAuth();
 
-  // 🔍 Debug: see what we're actually getting
+  // 🔍 Debug
   console.log("Navbar user:", user);
   console.log("Navbar profile:", profile);
 
-  // 🔒 Robust Pro check:
-  // Handles boolean, string, numeric edge cases safely.
   const isPro =
     profile?.is_pro === true ||
     profile?.is_pro === "true" ||
@@ -38,14 +36,11 @@ export function Navbar() {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo + Brand */}
         <Link to="/" className="flex items-center gap-2 font-bold">
-          {/* Bigger, responsive logo */}
           <img
             src="https://d64gsuwffb70l.cloudfront.net/68fdb98a1a41ecca41313355_1761679297358_d2ec59d1.png"
             alt="PromptGoatAI Logo"
             className="w-12 h-12 md:w-10 md:h-10"
           />
-
-          {/* Smaller text, hidden on tiny screens */}
           <span className="hidden sm:inline text-lg md:text-xl font-semibold tracking-tight whitespace-nowrap">
             <span className="text-blue-600">Prompt</span>
             <span className="text-yellow-500">Goat</span>
@@ -61,16 +56,11 @@ export function Navbar() {
               <Link to="/prompts">
                 <Button variant="ghost">Browse Prompts</Button>
               </Link>
-              {/* Always available */}
-<Link to="/prompts">
-  <Button variant="ghost">Browse Prompts</Button>
-</Link>
 
-{/* ✅ Free Prompt Pack */}
-<Link to="/free-prompt-pack">
-  <Button variant="ghost">Free Prompt Pack</Button>
-</Link>
-
+              {/* ✅ Free Prompt Pack (visible for logged-in users) */}
+              <Link to="/free-prompt-pack">
+                <Button variant="ghost">Free Prompt Pack</Button>
+              </Link>
 
               {/* ✅ AI Chat: ONLY if isPro is true */}
               {isPro && (
@@ -81,22 +71,6 @@ export function Navbar() {
                   </Button>
                 </Link>
               )}
-
-              {/* (Optional) Upsell version instead of hiding:
-                  Uncomment this and remove the block above if you prefer:
-
-              {!isPro && (
-                <Link to="/billing">
-                  <Button
-                    variant="outline"
-                    className="border-dashed"
-                  >
-                    <Sparkles className="w-4 h-4 mr-2 text-blue-500" />
-                    AI Chat (Pro)
-                  </Button>
-                </Link>
-              )}
-              */}
 
               {/* Admin-only */}
               {profile?.role === "admin" && (
@@ -171,9 +145,15 @@ export function Navbar() {
             </>
           ) : (
             <>
+              {/* ✅ Free Prompt Pack (visible even if logged out) */}
+              <Link to="/free-prompt-pack">
+                <Button variant="ghost">Free Prompt Pack</Button>
+              </Link>
+
               <Link to="/login">
                 <Button variant="ghost">Log In</Button>
               </Link>
+
               <Link to="/signup">
                 <Button>Sign Up</Button>
               </Link>
