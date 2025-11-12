@@ -538,15 +538,17 @@ export default function FreePromptPackPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Link to="/prompts">
-              <Button variant="outline" className="border-slate-700 text-slate-200">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Dashboard
-              </Button>
-            </Link>
-          </div>
-        </div>
+         <div className="flex items-center gap-2">
+  <Link to="/prompts">
+    <Button
+      className="bg-[#0070F3] hover:bg-[#005AD1] text-white font-semibold shadow-md transition-all"
+    >
+      <ArrowLeft className="w-4 h-4 mr-2 text-white" />
+      Back to Dashboard
+    </Button>
+  </Link>
+</div>
+
 
         {/* Search */}
         <div className="mt-6 relative max-w-2xl">
