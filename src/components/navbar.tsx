@@ -51,7 +51,7 @@ export function Navbar() {
                 <Button variant="ghost">Browse Prompts</Button>
               </Link>
 
-              {/* Free Prompt Pack */}
+              {/* ✅ Free Prompt Pack (AUTH-ONLY) */}
               <Link to="/free-prompt-pack">
                 <Button variant="ghost">Free Prompt Pack</Button>
               </Link>
@@ -139,15 +139,10 @@ export function Navbar() {
             </>
           ) : (
             <>
-              {/* Free Prompt Pack visible pre-login */}
-              <Link to="/free-prompt-pack">
-                <Button variant="ghost">Free Prompt Pack</Button>
-              </Link>
-
+              {/* Logged-out users: NO Free Prompt Pack in nav */}
               <Link to="/login">
                 <Button variant="ghost">Log In</Button>
               </Link>
-
               <Link to="/signup">
                 <Button>Sign Up</Button>
               </Link>
