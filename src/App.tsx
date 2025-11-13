@@ -16,7 +16,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import { AiPromptsPage } from "@/pages/AiPromptsPage"
+import { AiPromptsPage } from "./pages/aiprompts"
 import Prompts from "./pages/Prompts";
 import Profile from "./pages/Profile";
 import Billing from "./pages/Billing";
