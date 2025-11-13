@@ -28,10 +28,12 @@ export function AiPromptsPage() {
       <header className="border-b border-slate-800 bg-slate-950/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <div className="flex items-center gap-2">
-            {/* If you have a logo image, swap this div for <img /> */}
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-400 text-slate-950 font-black text-xl">
-              🐐
-            </div>
+            {/* Goat logo from public folder */}
+            <img
+              src="/prompt-goat-photo.png"
+              alt="PromptGoatAI Logo"
+              className="h-9 w-9 rounded-full object-cover"
+            />
             <div>
               <div className="text-sm uppercase tracking-[0.25em] text-amber-300">
                 PromptGoatAI
