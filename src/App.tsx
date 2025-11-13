@@ -8,6 +8,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import { AiPromptsPage } from "@/pages/AiPromptsPage"
 import Prompts from "./pages/Prompts";
 import Profile from "./pages/Profile";
 import Billing from "./pages/Billing";
@@ -35,6 +36,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/ai-prompts" element={<AiPromptsPage />} />
               <Route path="/prompts" element={<Prompts />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/billing" element={<Billing />} />
