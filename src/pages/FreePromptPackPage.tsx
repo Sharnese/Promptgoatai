@@ -4,23 +4,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function FreePromptPackPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50">
-      {/* Top bar */}
-      <header className="border-b border-slate-800 bg-slate-950/90 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-400 text-slate-950 font-black text-xl">
-              🐐
-            </div>
-            <div>
-              <div className="text-sm uppercase tracking-[0.25em] text-amber-300">
-                PromptGoatAI
-              </div>
-              <p className="text-xs text-slate-400">
-                Free Prompt Pack
-              </p>
-            </div>
-          </div>
+    <div className="flex items-center gap-3">
+  <img
+    src="/prompt-goat-photo.png"
+    alt="PromptGoatAI Logo"
+    className="h-10 w-10 rounded-full object-cover"
+  />
+  <div>
+    <div className="text-sm uppercase tracking-[0.25em] text-amber-300">
+      PromptGoatAI
+    </div>
+    <p className="text-xs text-slate-400">
+      Free Prompt Pack
+    </p>
+  </div>
+</div>
+
 
           <Link to="/">
             <Button variant="ghost" className="text-slate-300 hover:text-amber-300">
